@@ -41,7 +41,10 @@
         , code
         ;
       FILES.forEach(function (filename) {
-        codes.push(fs.readFileSync(path.join(SRC, filename), 'utf8'));
+        var code = fs.readFileSync(path.join(SRC, filename), 'utf8')
+          ;
+        code = code.replace(/[\r\n]$/, '');
+        codes.push(code);
       });
       EXPORTS.forEach(function (exp) {
         exports.push('this.' + exp + ' = ' + exp + ';');
@@ -51,16 +54,23 @@
       code = codes.join('\n\n\n');
       fs.writeFileSync(path.join(DST, NAME + '.raw.js'), code);
 
+      codes = code.split(/\r?\n/);
+      codes.forEach(function (line, i) {
+        if (line === '') {
+          return;
+        }
+        codes[i] = '  ' + line;
+      });
       code = [
         '(function () {',
-        code,
+        codes.join('\n'),
         '}).call(this);'
       ].join('\n');
       fs.writeFileSync(path.join(DST, NAME + '.js'), code);
 
       code = uglify.minify(code, {
         fromString: true
-      });
+      }).code;
       fs.writeFileSync(path.join(DST, NAME + '.min.js'), code);
 
       sys.puts([Date.now(), ':', 'Compiled'].join(' '));

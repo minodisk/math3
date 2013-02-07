@@ -7,7 +7,8 @@
       'Vector3.js',
       'EulerAngles.js',
       'Quaternion.js',
-      'RotationMatrix.js'
+      'RotationMatrix.js',
+      'Matrix4x3.js'
     ]
     , DST = 'lib'
     , NAME = 'math3'

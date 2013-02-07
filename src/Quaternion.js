@@ -467,11 +467,11 @@ Quaternion.prototype.pow = function (exponent) {
   result.w = cos(newAlpha);
 
   // Compute new xyz values
-  var mul = sin(newAlpha) / sin(alpha)
+  var mult = sin(newAlpha) / sin(alpha)
     ;
-  result.x = this.x * mul;
-  result.y = this.y * mul;
-  result.z = this.z * mul;
+  result.x = this.x * mult;
+  result.y = this.y * mult;
+  result.z = this.z * mult;
 
   // Return it
   return result;

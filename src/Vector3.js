@@ -35,8 +35,6 @@ function Vector3(x, y, z) {
     z = v.z;
   }
 
-// Public representation:  Not many options here.
-
   this.x = x != null ? x : 0;
   this.y = y != null ? y : 0;
   this.z = z != null ? z : 0;

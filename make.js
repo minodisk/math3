@@ -10,6 +10,13 @@
       'RotationMatrix.js',
       'Matrix4x3.js'
     ]
+    , EXPORTS = [
+      'Vector3',
+      'EulerAngles',
+      'Quaternion',
+      'RotationMatrix',
+      'Matrix4x3'
+    ]
     , DST = 'lib'
     , NAME = 'math3'
 
@@ -28,15 +35,28 @@
     })()
     , compile = function () {
       var codes = []
+        , exports = []
         , code
         ;
       FILES.forEach(function (filename) {
-        codes.push(fs.readFileSync(path.join(SRC, filename), 'utf8'));
+        var lines = fs.readFileSync(path.join(SRC, filename), 'utf8')
+            .split(/\r?\n/)
+          ;
+        lines.forEach(function (line, i) {
+          lines[i] = '  ' + line;
+        });
+        codes.push(lines.join('\n'));
       });
+      EXPORTS.forEach(function (exp) {
+        exports.push('  this.' + exp + ' = ' + exp + ';');
+      });
+      codes.push(exports.join('\n'));
 
-      codes.unshift('(function () {');
-      codes.push('})();');
-      code = codes.join('\n\n\n');
+      code = [
+        '(function () {',
+        codes.join('\n\n\n'),
+        '}).call(this);'
+      ].join('\n');
 
       fs.writeFileSync(path.join(DST, NAME + '.js'), code);
     }

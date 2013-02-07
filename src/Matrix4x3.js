@@ -825,7 +825,7 @@ Matrix4x3.prototype.inverse = function () {
 // If we're singular, then the determinant is zero and there's
 // no inverse
 
-  assert(abs(det) > 000001);
+  assert(abs(det) > 0.000001);
 
 // Compute one over the determinant, so we divide once and
 // can *multiply* per element
